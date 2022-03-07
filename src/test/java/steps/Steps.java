@@ -15,12 +15,12 @@ public class Steps {
 
     @Given("Add dates")
     public void addDates() {
+        BDDStyledMethod.Post();
     }
-
     @When("Add <firstname> and <lastname> and <totalprice> and <depositpaid> and <checkin> and <checkout> and <additionalneeds>")
     public void addFirstnameAndLastnameAndTotalpriceAndDepositpaidAndCheckinAndCheckoutAndAdditionalneeds() {
-        
     }
+
     @Then("Booking is added")
     public void bookingIsAdded(String url) {
 //        response = Booking("https://restful-booker.herokuapp.com/booking");
@@ -36,10 +36,11 @@ public class Steps {
 
     @When("I use get in request")
     public void iUseGetInRequest() {
-
     }
 
     @Then("I will get bookings")
     public void iWillGetBookings() {
     }
+
+
 }
