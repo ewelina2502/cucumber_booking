@@ -14,5 +14,5 @@ Feature:
     Then Booking is added
     Examples:
     | firstname | lastname | totalprice | depositpaid |checkin    | checkout   | additionalneeds |
-    | Adam      | Nowak    | 123        | True        |2021-01-21 | 2022-01-23 | Breakfast       |
+    | Adam      | Nowak    | 123        | true        |2021-01-21 | 2022-01-23 | Breakfast       |
 
