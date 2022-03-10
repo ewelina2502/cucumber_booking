@@ -9,7 +9,7 @@ import static org.hamcrest.core.Is.is;
 public class BDDStyledMethod {
 
 //    public static void PostBooking() {
-//        HashMap<String, String, Integer, Boolean, String, String,String> postContent = new HashMap<>();
+//       BDDStyledMethod postContent = new BDDStyledMethod();
 //        postContent.put("firstname", "Ewelina");
 //        postContent.put("lastname", "Test");
 //        postContent.put("totalprice", "123");
@@ -29,6 +29,8 @@ public class BDDStyledMethod {
 //                .body("firstname", is("Ewelina"));
 //
 //    }
+
+
 
 
 //    public static void PerformQueryParameter() {

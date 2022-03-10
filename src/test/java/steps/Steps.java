@@ -1,5 +1,6 @@
 package steps;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -7,6 +8,9 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseOptions;
 import org.junit.Assert;
+import utilities.RestAssureExtension;
+
+import java.util.HashMap;
 
 public class Steps {
 
@@ -63,4 +67,99 @@ public class Steps {
     @Then("I have booking")
     public void iHaveBooking() {
     }
+
+    @Given("Add dates")
+    public void addDates() {
+
+    }
+    @When("Add {string} {string} {string} {string} {string} {string} {string}")
+    public void add(String firstname, String lastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
+
+//        var data = table.row(7);
+//        HashMap<String, String> body = new HashMap<>();
+//        body.put("firstname", data.get(0));
+//        body.put("lastname", data.get(1));
+//        body.put("totalprice", data.get(2));
+//        body.put("depositpaid", data.get(3));
+//        body.put("checkin", data.get(4));
+//        body.put("checkout", data.get(5));
+//        body.put("additionalneeds", data.get(6));
+//
+//
+//        response = RestAssureExtension.PostOpsWithBodyAndPathParams("https://restful-booker.herokuapp.com/booking", body);
+
+        String get_url = "https://restful-booker.herokuapp.com/booking";
+        String body = "{" +
+                " \"firstname\": " + '"' + firstname + '"' + ","+
+                " \"lastname\": " +  '"' + lastname + '"' + "," +
+                " \"totalprice\": "  + totalprice + "," +
+                " \"depositpaid\": " + depositpaid +"," +
+                " \"bookingdates\":"  +
+                " { \"checkin\": " + '"' + checkin + '"'+ "," +
+                " \"checkout\": " + '"' + checkout + '"' + "}," +
+                " \"additionalneeds\": " + '"' + additionalneeds + '"' +
+                "}" +
+                "}";
+
+        Response response = RestAssured.
+                given().
+                contentType("application/json").
+                body(body).
+                when().
+                post(get_url).
+                then().
+                extract().
+                response();
+
+        Assert.assertEquals(response.getStatusCode(),200);
+        System.out.println("Body :" + response.getBody().asString());
+
+
+
+    }
+
+
+
+
+    @Then("Booking is added")
+    public void bookingIsAdded() {
+    }
+
+
+
 }
+//
+//    @When("Add <firstname> and <lastname> and <totalprice> and <depositpaid> and <checkin> and <checkout> and <additionalneeds>")
+//    public void addFirstnameAndLastnameAndTotalpriceAndDepositpaidAndCheckinAndCheckoutAndAdditionalneeds(String firstname, String lastname, Integer totalprice,  Boolean depositpaid, String checkin, String checkout, String additionalneeds, DataTable table) {
+
+//        String get_url = "https://restful-booker.herokuapp.com/booking";
+//        String body = "{" +
+//                " \"firstname\": " + '"' + firstname + '"' + ","+
+//                " \"lastname\": " +  '"' + lastname + '"' + "," +
+//                " \"totalprice\": "  + totalprice + "," +
+//                " \"depositpaid\": " + depositpaid +"," +
+//                " \"bookingdates\":"  +
+//                " { \"checkin\": " + '"' + checkin + '"'+ "," +
+//                " \"checkout\": " + '"' + checkout + '"' + "}," +
+//                " \"additionalneeds\": " + '"' + additionalneeds + '"' +
+//                "}";
+//
+//        Response response = RestAssured.
+//                given().
+//                contentType("application/json").
+//                body(body).
+//                when().
+//                post(get_url).
+//                then().
+//                extract().
+//                response();
+//
+//        Assert.assertEquals(response.getStatusCode(),200);
+//        System.out.println("Body :" + response.getBody().asString());
+
+
+
+//    }
+
+
+
