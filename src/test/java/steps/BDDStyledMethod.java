@@ -1,47 +1,24 @@
 package steps;
 
-import io.restassured.http.ContentType;
-import java.util.HashMap;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.core.Is.is;
 
 public class BDDStyledMethod {
 
-//    public static void PostBooking() {
-//       BDDStyledMethod postContent = new BDDStyledMethod();
-//        postContent.put("firstname", "Ewelina");
-//        postContent.put("lastname", "Test");
-//        postContent.put("totalprice", "123");
-//        postContent.put("depositpaid", "True");
-//        postContent.put("checkin", "2021-01-01");
-//        postContent.put("checkout", "2021-01-01");
-//        postContent.put("additionalneeds", "NOT");
-//
-//
-//        given()
-//                .contentType(ContentType.JSON).
-//                with()
-//                .body(postContent).
-//                when()
-//                .get("https://restful-booker.herokuapp.com/booking").
-//                then()
-//                .body("firstname", is("Ewelina"));
-//
-//    }
+    public static String baseUrl(){
+        return "https://restful-booker.herokuapp.com/booking";
 
+    }
 
-
-
-//    public static void PerformQueryParameter() {
-//        given()
-//                .contentType(ContentType.JSON)
-//                .with()
-//                .queryParam("id", 2)
-//                .when()
-//                .get("https://restful-booker.herokuapp.com/booking")
-//                .then()
-//                .body("author", hasItem("Ewelina"));
-//    }
+    public static String body() {
+        return "{" +
+                " \"firstname\":  \"John\"," +
+                " \"lastname\":  \"Badminton\"," +
+                " \"totalprice\":  \"123\"," +
+                " \"depositpaid\": \"true\"," +
+                " \"bookingdates\":" +
+                " { \"checkin\":  \"2022-01-14\"," +
+                " \"checkout\":  \"2022-01-15\" }" + "," +
+                " \"additionalneeds\":  \"Lunch\"" +
+                "}";
+            }
 
 }
