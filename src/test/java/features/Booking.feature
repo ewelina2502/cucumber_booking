@@ -4,9 +4,9 @@ Feature:
     When I use get in request
     Then I will get bookings
 
-    Scenario: postBookingWithJson
-      Given Add parameters
-      Then I have booking
+  Scenario: postBookingWithJson
+    Given Add parameters
+    Then I have booking
 
 
   Scenario Outline: postBookingWithDatas
