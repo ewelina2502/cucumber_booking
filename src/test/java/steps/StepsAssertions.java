@@ -91,6 +91,11 @@ public class StepsAssertions {
         System.out.println("TEST PASSED, Checkin = " + checkin );
     }
 
-
+    @Then("Search new assertion of checkout")
+    public void searchNewAssertionOfCheckout() {
+        String checkout = response.jsonPath().get("bookingdates.checkout");
+        Assert.assertEquals("2026-01-23", checkout);
+        System.out.println("TEST PASSED, Checkin = " + checkout );
+    }
 }
 

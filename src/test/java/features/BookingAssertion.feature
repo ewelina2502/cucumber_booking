@@ -54,3 +54,12 @@ Feature: Assertions
     Examples:
       | firstname | lastname | totalprice | depositpaid  |checkin    | checkout   | additionalneeds |
       | Bartosz   | Pajak    | 199        | true         |2026-01-21 | 2026-01-23 | Breakfast       |
+
+  Scenario Outline: postBookingWithAssertionOfCheckout
+    Given Add path, post request
+    And Add parameters "<firstname>" "<lastname>" "<totalprice>" "<depositpaid>" "<checkin>" "<checkout>" "<additionalneeds>"
+    When Check of booking ids
+    Then Search new assertion of checkout
+    Examples:
+      | firstname | lastname | totalprice | depositpaid  |checkin    | checkout   | additionalneeds |
+      | Bartosz   | Pajak    | 199        | true         |2026-01-21 | 2026-01-23 | Breakfast       |
