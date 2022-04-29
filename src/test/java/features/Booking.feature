@@ -2,11 +2,12 @@ Feature:
   Scenario: getBookings
     Given Get booking
     When I use get in request
-    Then I will get bookings
+#    Then I will get bookings
+  Then Booking is added
 
   Scenario: postBookingWithJson
     Given Add parameters
-    Then I have booking
+    Then Booking is added
 
   Scenario Outline: postBookingWithDatas
     Given Add dates
