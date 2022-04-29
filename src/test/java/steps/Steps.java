@@ -5,16 +5,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
 
-import static java.nio.file.Paths.get;
+
 
 public class Steps {
 
-//    public static ResponseOptions<Response> response;
     RequestSpecification request;
     public static  Response response;
 
@@ -27,15 +25,11 @@ public class Steps {
         response = RestAssured.get(BDDStyledMethod.baseUrl());
         Assert.assertEquals(response.getStatusCode(), 200);
     }
-//    @Then("I will get bookings")
-//    public void iWillGetBookings() {
-//        System.out.println("Body Ids:" + response.getBody().asString());
-//        List<Object> bookingId = response.jsonPath().getList("bookingid");
-//        System.out.println(bookingId);
-//    }
+
 
     @Given("Add parameters")
     public void addParameters() {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
         request  =  RestAssured.given();
         request.header("ContentType",  "application/json");
 
@@ -47,21 +41,18 @@ public class Steps {
                 then().
                 extract().
                 response();
-
-        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+    @Then("Booking is exist")
+    public void bookingIsExist() {
+//        Assert.assertEquals(response.getStatusCode(), 200);
         System.out.println(response.getBody().asString());
     }
 
-    @Then("I have booking")
-    public void iHaveBooking() {
-        String firstname = response.jsonPath().get("firstname");
-        Assert.assertEquals("John", firstname);
-        System.out.println("Test PASSED becouse firstname = " + firstname);
-    }
+
 
     @Given("Add dates")
     public void addDates() {
-        BDDStyledMethod.baseUrl();
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
     }
 
     @When("Add {string} {string} {string} {string} {string} {string} {string}")
@@ -88,7 +79,6 @@ public class Steps {
                 then().
                 extract().
                 response();
-
     }
 
     @Then("Booking is added")
@@ -137,7 +127,6 @@ public class Steps {
         int bookingid = response.jsonPath().getInt("bookingid");
         System.out.println("bookingId: " + bookingid);
         response = RestAssured.get(BDDStyledMethod.baseUrl() + "/" + bookingid);
-//        System.out.println("Body2: " + response.getBody().asString());
     }
 
 
@@ -146,8 +135,10 @@ public class Steps {
 
         String firstname = response.jsonPath().get("firstname");
         Assert.assertEquals("Maciej", firstname);
-        System.out.println("Test PASSED becouse firstname = " + firstname );
+        System.out.println("TEST PASSED, firstname = " + firstname );
     }
+
+
 }
 
 

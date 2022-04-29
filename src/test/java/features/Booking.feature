@@ -7,7 +7,7 @@ Feature:
 
   Scenario: postBookingWithJson
     Given Add parameters
-    Then Booking is added
+    Then Booking is exist
 
   Scenario Outline: postBookingWithDatas
     Given Add dates
