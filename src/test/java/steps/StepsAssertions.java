@@ -62,11 +62,35 @@ public class StepsAssertions {
         System.out.println("TEST PASSED, lastname = " + firstname );
     }
 
-    @Then("Search new assertion od additionalneeds")
-    public void searchNewAssertionOdAdditionalneeds() {
+    @Then("Search new assertion of additionalneeds")
+    public void searchNewAssertionOfAdditionalneeds() {
         String additionalneeds = response.jsonPath().get("additionalneeds");
         Assert.assertEquals("Breakfast", additionalneeds);
         System.out.println("TEST PASSED, Breakfast = " + additionalneeds );
+    }
+
+    @Then("Search new assertion of totalprice")
+    public void searchNewAssertionOfTotalprice() {
+        int totalprice = response.jsonPath().get("totalprice");
+        Assert.assertEquals(199, totalprice);
+        System.out.println("TEST PASSED, Totalprice = " + totalprice );
+    }
+
+    @Then("Search new assertion of depositpaid")
+    public void searchNewAssertionOfDepositpaid() {
+        boolean depositpaid = response.jsonPath().get("depositpaid");
+        Assert.assertTrue(depositpaid);
+        System.out.println("TEST PASSED, Totalprice = " + true);
 
     }
+
+    @Then("Search new assertion of checkin")
+    public void searchNewAssertionOfCheckin() {
+        String checkin = response.jsonPath().get("bookingdates.checkin");
+        Assert.assertEquals("2026-01-21", checkin);
+        System.out.println("TEST PASSED, Checkin = " + checkin );
+    }
+
+
 }
+
