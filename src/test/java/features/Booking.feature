@@ -8,7 +8,6 @@ Feature:
     Given Add parameters
     Then I have booking
 
-
   Scenario Outline: postBookingWithDatas
     Given Add dates
     When Add "<firstname>" "<lastname>" "<totalprice>" "<depositpaid>" "<checkin>" "<checkout>" "<additionalneeds>"
