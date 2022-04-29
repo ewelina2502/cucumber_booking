@@ -19,20 +19,15 @@ public class Steps {
     RequestSpecification request;
     public static  Response response;
 
-
     @Given("Get booking")
     public void getBooking() {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
-
     }
-
     @When("I use get in request")
     public void iUseGetInRequest() {
         response = RestAssured.get(BDDStyledMethod.baseUrl());
         Assert.assertEquals(response.getStatusCode(), 200);
-
     }
-
     @Then("I will get bookings")
     public void iWillGetBookings() {
         System.out.println("Body :" + response.getBody().asString());
@@ -40,16 +35,14 @@ public class Steps {
 
     @Given("Add parameters")
     public void addParameters() {
-        String get_url = BDDStyledMethod.baseUrl();
-        String body = BDDStyledMethod.body();
-        String contentType = "application/json";
+        request  =  RestAssured.given();
+        request.header("ContentType",  "application/json");
 
-        Response response = RestAssured.
+        response = RestAssured.
                 given().
-                contentType(contentType).
-                body(body).
+                body(BDDStyledMethod.body()).
                 when().
-                post(get_url).
+                post(BDDStyledMethod.baseUrl()).
                 then().
                 extract().
                 response();
@@ -60,7 +53,9 @@ public class Steps {
 
     @Then("I have booking")
     public void iHaveBooking() {
-        System.out.println("Booking is added");
+        String firstname = response.jsonPath().get("firstname");
+        Assert.assertEquals("John", firstname);
+        System.out.println("Test PASSED becouse firstname = " + firstname);
     }
 
     @Given("Add dates")
@@ -94,9 +89,7 @@ public class Steps {
                 response();
         Assert.assertEquals(response.getStatusCode(), 200);
         System.out.println("Body :" + response.getBody().asString());
-
     }
-
 
     @Then("Booking is added")
     public void bookingIsAdded() {
