@@ -19,3 +19,6 @@ Feature:
     | Ada       | Nowa     | 124        | false        |2022-01-21 | 2022-01-23 | Lunch           |
     | Magda     | Kowal    | 125        | false        |2023-03-23 | 2024-04-24 | Lunch           |
 
+  Scenario: usedBadUrl
+    Given Add bad url
+    Then I have response bad request

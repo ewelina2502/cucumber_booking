@@ -48,8 +48,6 @@ public class Steps {
         System.out.println(response.getBody().asString());
     }
 
-
-
     @Given("Add dates")
     public void addDates() {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
@@ -139,6 +137,16 @@ public class Steps {
     }
 
 
+    @Given("Add bad url")
+    public void addBadUrl() {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "badUrl";
+    }
+
+    @Then("I have response bad request")
+    public void iHaveResponseBadRequest() {
+        response = RestAssured.get(BDDStyledMethod.baseUrl() + "badUrl");
+        Assert.assertEquals(response.getStatusCode(), 404);
+    }
 }
 
 
