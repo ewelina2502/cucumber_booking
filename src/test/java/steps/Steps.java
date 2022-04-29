@@ -6,6 +6,7 @@ import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseOptions;
+import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
 
 import java.io.File;
@@ -14,25 +15,27 @@ import static io.restassured.RestAssured.get;
 
 public class Steps {
 
-    public static ResponseOptions<Response> response;
+//    public static ResponseOptions<Response> response;
+    RequestSpecification request;
+    public static  Response response;
+
 
     @Given("Get booking")
     public void getBooking() {
-       BDDStyledMethod.baseUrl();
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
 
     }
 
     @When("I use get in request")
-    public boolean iUseGetInRequest() {
-        Response response = RestAssured.get(BDDStyledMethod.baseUrl());
+    public void iUseGetInRequest() {
+        response = RestAssured.get(BDDStyledMethod.baseUrl());
         Assert.assertEquals(response.getStatusCode(), 200);
-        System.out.println("Body :" + response.getBody().asString());
-        return false;
+
     }
 
     @Then("I will get bookings")
     public void iWillGetBookings() {
-        System.out.println(iUseGetInRequest());
+        System.out.println("Body :" + response.getBody().asString());
     }
 
     @Given("Add parameters")
