@@ -147,6 +147,17 @@ public class Steps {
         response = RestAssured.get(BDDStyledMethod.baseUrl() + "badUrl");
         Assert.assertEquals(response.getStatusCode(), 404);
     }
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

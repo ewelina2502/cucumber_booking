@@ -1,5 +1,5 @@
 Feature: Assertions
-  Scenario Outline: postBookingWithExamples
+  Scenario Outline: postBookingWithAssertionOfFirstname
     Given Add path and post request
     And Add new parameters "<firstname>" "<lastname>" "<totalprice>" "<depositpaid>" "<checkin>" "<checkout>" "<additionalneeds>"
     When Check new booking ids
@@ -9,7 +9,7 @@ Feature: Assertions
       | Maciej    | Pajak    | 199        | true         |2026-01-21 | 2026-01-23 | Breakfast       |
 
 
-  Scenario Outline: postBookingWithExamples2
+  Scenario Outline: postBookingWithAssertionOfLastname
     Given Add path, post request
     And Add parameters "<firstname>" "<lastname>" "<totalprice>" "<depositpaid>" "<checkin>" "<checkout>" "<additionalneeds>"
     When Check of booking ids
@@ -18,4 +18,13 @@ Feature: Assertions
       | firstname | lastname | totalprice | depositpaid  |checkin    | checkout   | additionalneeds |
       | Zuzia     | Pajak    | 199        | true         |2026-01-21 | 2026-01-23 | Breakfast       |
 
+
+  Scenario Outline: postBookingWithAssertionOfAdditionalneeds
+    Given Add path, post request
+    And Add parameters "<firstname>" "<lastname>" "<totalprice>" "<depositpaid>" "<checkin>" "<checkout>" "<additionalneeds>"
+    When Check of booking ids
+    Then Search new assertion od additionalneeds
+    Examples:
+      | firstname | lastname | totalprice | depositpaid  |checkin    | checkout   | additionalneeds |
+      | Bartosz   | Pajak    | 199        | true         |2026-01-21 | 2026-01-23 | Breakfast       |
 

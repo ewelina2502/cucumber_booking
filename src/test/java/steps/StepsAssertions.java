@@ -61,4 +61,12 @@ public class StepsAssertions {
         Assert.assertEquals("Pajak", firstname);
         System.out.println("TEST PASSED, lastname = " + firstname );
     }
+
+    @Then("Search new assertion od additionalneeds")
+    public void searchNewAssertionOdAdditionalneeds() {
+        String additionalneeds = response.jsonPath().get("additionalneeds");
+        Assert.assertEquals("Breakfast", additionalneeds);
+        System.out.println("TEST PASSED, Breakfast = " + additionalneeds );
+
+    }
 }
