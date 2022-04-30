@@ -31,10 +31,10 @@ public class Steps {
     public void addParameters() {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
         request  =  RestAssured.given();
-        request.header("ContentType",  "application/json");
 
         response = RestAssured.
                 given().
+                contentType("application/json").
                 body(BDDStyledMethod.body()).
                 when().
                 post(BDDStyledMethod.baseUrl()).
@@ -44,7 +44,7 @@ public class Steps {
     }
     @Then("Booking is exist")
     public void bookingIsExist() {
-//        Assert.assertEquals(response.getStatusCode(), 200);
+        Assert.assertEquals(response.getStatusCode(), 200);
         System.out.println(response.getBody().asString());
     }
 
@@ -146,12 +146,17 @@ public class Steps {
     public void iHaveResponseBadRequest() {
         response = RestAssured.get(BDDStyledMethod.baseUrl() + "badUrl");
         Assert.assertEquals(response.getStatusCode(), 404);
+        System.out.println("Status code: " + response.getStatusCode());
     }
 
     @When("I put firstname and add cookies and authorization")
     public void iPutFirstnameAndAddCookiesAndAuthorization() {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
         request  =  RestAssured.given();
+        int bookingid = response.jsonPath().getInt("bookingid");
+        System.out.println("bookingId: " + bookingid);
+        String baseUrlId = BDDStyledMethod.baseUrl() + "/" + bookingid;
+        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/" + bookingid);
 
         response = RestAssured.
                 given().
@@ -161,7 +166,7 @@ public class Steps {
                 header("Authorization", BDDStyledMethod.authorization()).
                 header("Cookie", BDDStyledMethod.cookies()).
                 when().
-                post(BDDStyledMethod.baseUrl()).
+                put(baseUrlId).
                 then().
                 extract().
                 response();
@@ -174,9 +179,6 @@ public class Steps {
     public void bookingHasANewFirstname() {
 
 
-        int bookingid = response.jsonPath().getInt("bookingid");
-        System.out.println("bookingId: " + bookingid);
-        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/" + bookingid);
         String firstname = response.jsonPath().get("firstname");
         Assert.assertEquals("Update", firstname);
         System.out.println("TEST PASSED, firstname = " + firstname );
