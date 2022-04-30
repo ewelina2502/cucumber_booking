@@ -148,13 +148,39 @@ public class Steps {
         Assert.assertEquals(response.getStatusCode(), 404);
     }
 
+    @When("I put firstname and add cookies and authorization")
+    public void iPutFirstnameAndAddCookiesAndAuthorization() {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request  =  RestAssured.given();
+
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                body(BDDStyledMethod.newBody()).
+                cookie(BDDStyledMethod.cookies()).
+                header("Authorization", BDDStyledMethod.authorization()).
+                header("Cookie", BDDStyledMethod.cookies()).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
+        Assert.assertEquals(response.getStatusCode(), 200);
+        System.out.println("Body: " + response.getBody().asString());
+    }
 
 
+    @Then("Booking has a new firstname")
+    public void bookingHasANewFirstname() {
 
 
-
-
-
+        int bookingid = response.jsonPath().getInt("bookingid");
+        System.out.println("bookingId: " + bookingid);
+        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/" + bookingid);
+        String firstname = response.jsonPath().get("firstname");
+        Assert.assertEquals("Update", firstname);
+        System.out.println("TEST PASSED, firstname = " + firstname );
+    }
 
 
 

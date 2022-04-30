@@ -57,9 +57,9 @@ public class StepsAssertions {
 
     @Then("Search new assertion")
     public void searchNewAssertion() {
-        String firstname = response.jsonPath().get("lastname");
-        Assert.assertEquals("Pajak", firstname);
-        System.out.println("TEST PASSED, lastname = " + firstname );
+        String lastname = response.jsonPath().get("lastname");
+        Assert.assertEquals("Pajak", lastname);
+        System.out.println("TEST PASSED, lastname = " + lastname );
     }
 
     @Then("Search new assertion of additionalneeds")
@@ -97,5 +97,28 @@ public class StepsAssertions {
         Assert.assertEquals("2026-01-23", checkout);
         System.out.println("TEST PASSED, Checkin = " + checkout );
     }
+
+    @Given("Add parameters with bad method")
+    public void addParametersWithBadMethod() {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request  =  RestAssured.given();
+        request.header("ContentType",  "application/json");
+
+        response = RestAssured.
+                given().
+                body(BDDStyledMethod.body()).
+                when().
+                delete(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
+    }
+
+    @Then("Booking isn't exist")
+    public void bookingIsnTExist() {
+        Assert.assertEquals(response.getStatusCode(), 404);
+    }
+
+
 }
 

@@ -22,3 +22,9 @@ Feature:
   Scenario: usedBadUrl
     Given Add bad url
     Then I have response bad request
+
+  Scenario: postAndPutBooking
+    Given Add parameters
+    And Booking is exist
+    When I put firstname and add cookies and authorization
+    Then Booking has a new firstname

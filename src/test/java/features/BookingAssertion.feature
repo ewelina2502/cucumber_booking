@@ -63,3 +63,7 @@ Feature: Assertions
     Examples:
       | firstname | lastname | totalprice | depositpaid  |checkin    | checkout   | additionalneeds |
       | Bartosz   | Pajak    | 199        | true         |2026-01-21 | 2026-01-23 | Breakfast       |
+
+  Scenario: postBookingWithBadMethod
+    Given Add parameters with bad method
+    Then Booking isn't exist
