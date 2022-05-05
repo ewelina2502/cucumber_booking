@@ -26,7 +26,6 @@ public class Steps {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
-
     @Given("Add parameters")
     public void addParameters() {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
@@ -42,6 +41,7 @@ public class Steps {
                 extract().
                 response();
     }
+
     @Then("Booking is exist")
     public void bookingIsExist() {
         Assert.assertEquals(response.getStatusCode(), 200);
@@ -85,7 +85,6 @@ public class Steps {
         System.out.println("Body: " + response.getBody().asString());
     }
 
-
     @Given("Add path and post request")
     public void addPathAndPostRequest() {
         request  =  RestAssured.given();
@@ -115,7 +114,6 @@ public class Steps {
                 then().
                 extract().
                 response();
-
     }
 
     @When("Check new booking ids")
@@ -127,14 +125,12 @@ public class Steps {
         response = RestAssured.get(BDDStyledMethod.baseUrl() + "/" + bookingid);
     }
 
-
     @Then("Search assertions")
     public void searchAssertions() {
         String firstname = response.jsonPath().get("firstname");
         Assert.assertEquals("Maciej", firstname);
         System.out.println("TEST PASSED, firstname = " + firstname );
     }
-
 
     @Given("Add bad url")
     public void addBadUrl() {
@@ -173,7 +169,6 @@ public class Steps {
         System.out.println("Body: " + response.getBody().asString());
     }
 
-
     @Then("Booking has a new firstname")
     public void bookingHasANewFirstname() {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
@@ -182,7 +177,6 @@ public class Steps {
         Assert.assertEquals("Update", firstname);
         System.out.println("TEST PASSED, firstname = " + firstname );
     }
-
 
     @When("I find Booking and Delete")
     public void iFindBookingAndDelete() {
