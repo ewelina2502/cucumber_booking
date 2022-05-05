@@ -28,3 +28,9 @@ Feature:
     And Booking is exist
     When I put firstname and add cookies and authorization
     Then Booking has a new firstname
+
+  Scenario: postPutAndDeleteBooking
+    Given Add parameters
+    And Booking is exist
+    When I find Booking and Delete
+    Then I have response not found Booking

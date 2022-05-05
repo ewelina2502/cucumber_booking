@@ -66,7 +66,7 @@ public class StepsAssertions {
     public void searchNewAssertionOfAdditionalneeds() {
         String additionalneeds = response.jsonPath().get("additionalneeds");
         Assert.assertEquals("Breakfast", additionalneeds);
-        System.out.println("TEST PASSED, Breakfast = " + additionalneeds );
+        System.out.println("TEST PASSED, Additionalneeds = " + additionalneeds );
     }
 
     @Then("Search new assertion of totalprice")

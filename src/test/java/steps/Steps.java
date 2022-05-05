@@ -130,7 +130,6 @@ public class Steps {
 
     @Then("Search assertions")
     public void searchAssertions() {
-
         String firstname = response.jsonPath().get("firstname");
         Assert.assertEquals("Maciej", firstname);
         System.out.println("TEST PASSED, firstname = " + firstname );
@@ -177,14 +176,41 @@ public class Steps {
 
     @Then("Booking has a new firstname")
     public void bookingHasANewFirstname() {
-
-
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request  =  RestAssured.given();
         String firstname = response.jsonPath().get("firstname");
         Assert.assertEquals("Update", firstname);
         System.out.println("TEST PASSED, firstname = " + firstname );
     }
 
 
+    @When("I find Booking and Delete")
+    public void iFindBookingAndDelete() {
+        request = RestAssured.given();
+        int bookingid = response.jsonPath().getInt("bookingid");
+        System.out.println("bookingId: " + bookingid);
+        String baseUrlId = BDDStyledMethod.baseUrl() + "/" + bookingid;
+
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                cookie(BDDStyledMethod.cookies()).
+                header("Authorization", BDDStyledMethod.authorization()).
+                header("Cookie", BDDStyledMethod.cookies()).
+                when().
+                delete(baseUrlId).
+                then().
+                extract().
+                response();
+        Assert.assertEquals(response.getStatusCode(),201);
+        response = RestAssured.get(baseUrlId);
+        System.out.println(response.statusCode() + " Not found id: " + bookingid);
+    }
+
+    @Then("I have response not found Booking")
+    public void iHaveResponseNotFoundBooking() {
+        Assert.assertEquals(response.getStatusCode(),404);
+    }
 
 }
 
