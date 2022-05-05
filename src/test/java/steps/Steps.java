@@ -196,7 +196,7 @@ public class Steps {
                 contentType("application/json").
                 cookie(BDDStyledMethod.cookies()).
                 header("Authorization", BDDStyledMethod.authorization()).
-                header("Cookie", BDDStyledMethod.cookies()).
+//                header("Cookie", BDDStyledMethod.cookies()).
                 when().
                 delete(baseUrlId).
                 then().
