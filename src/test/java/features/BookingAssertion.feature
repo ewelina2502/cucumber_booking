@@ -67,3 +67,9 @@ Feature: Assertions
   Scenario: postBookingWithBadMethod
     Given Add parameters with bad method
     Then Booking isn't exist
+
+  Scenario: postBookingWithDateToday
+    Given Add path and post request
+    When I added body with date today
+    Then I have new booking with today date
+

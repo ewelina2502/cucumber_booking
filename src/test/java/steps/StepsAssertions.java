@@ -8,6 +8,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
+import utilities.Faker;
 
 public class StepsAssertions {
 
@@ -95,7 +96,7 @@ public class StepsAssertions {
     public void searchNewAssertionOfCheckout() {
         String checkout = response.jsonPath().get("bookingdates.checkout");
         Assert.assertEquals("2026-01-23", checkout);
-        System.out.println("TEST PASSED, Checkin = " + checkout );
+        System.out.println("TEST PASSED, Checkout = " + checkout );
     }
 
     @Given("Add parameters with bad method")
@@ -119,6 +120,36 @@ public class StepsAssertions {
         Assert.assertEquals(response.getStatusCode(), 404);
     }
 
+
+    @When("I added body with date today")
+    public void iAddedBodyWithDateToday() {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request  =  RestAssured.given();
+
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                body(BDDStyledMethod.bodyWithdateToday()).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
+
+        Assert.assertEquals(response.getStatusCode(), 200);
+        System.out.println("Body: " + response.getBody().asString());
+        int bookingid = response.jsonPath().getInt("bookingid");
+        System.out.println("bookingId: " + bookingid);
+        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/" + bookingid);
+    }
+
+    @Then("I have new booking with today date")
+    public void iHaveNewBookingWithTodayDate() {
+        String checkin = response.jsonPath().get("bookingdates.checkin");
+        String today = Faker.printDate();
+        Assert.assertEquals(today, checkin);
+        System.out.println("TEST PASSED, Checkin = " + checkin );
+    }
 
 }
 

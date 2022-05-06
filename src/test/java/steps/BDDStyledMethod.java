@@ -1,11 +1,14 @@
 package steps;
 
 
+import utilities.Faker;
+
 public class BDDStyledMethod {
 
     public static String baseUrl(){
         return "https://restful-booker.herokuapp.com/booking";
     }
+
     public static String cookies() {
         return "token=f61416de503d436";
     }
@@ -40,4 +43,17 @@ public class BDDStyledMethod {
                 "}";
     }
 
+    public static String bodyWithdateToday() {
+        return "{" +
+                " \"firstname\":  \"Update\"," +
+                " \"lastname\":  \"Badminton\"," +
+                " \"totalprice\":  \"123\"," +
+                " \"depositpaid\": \"true\"," +
+                " \"bookingdates\":" +
+                " { \"checkin\": " + '"' + Faker.printDate() + '"'+ "," +
+                " \"checkout\": " + '"' +Faker.printTomorrow() + '"' + "}," +
+                " \"additionalneeds\":  \"Lunch\"" +
+                "}";
+
+    }
 }
