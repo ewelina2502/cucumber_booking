@@ -1,0 +1,11 @@
+{
+  "firstname" : "James",
+  "lastname" : "Json",
+  "totalprice" : 123,
+  "depositpaid" : true,
+  "bookingdates" : {
+    "checkin" : "2033-01-12",
+    "checkout" : "2033-01-02"
+  },
+  "additionalneeds" : "Breakfast with Json"
+}

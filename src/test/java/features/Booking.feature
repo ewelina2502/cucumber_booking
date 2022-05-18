@@ -34,3 +34,7 @@ Feature:
     And Booking is exist
     When I find Booking and Delete
     Then I have response not found Booking
+
+  Scenario: postBookingWithJsonFile
+    Given Add url
+    Then Add json file to body

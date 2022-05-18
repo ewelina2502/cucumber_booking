@@ -9,6 +9,10 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
 
+import java.io.File;
+
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class Steps {
@@ -206,6 +210,32 @@ public class Steps {
         Assert.assertEquals(response.getStatusCode(),404);
     }
 
+    @Given("Add url")
+    public void addUrl() {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+    }
+
+    @Then("Add json file to body")
+    public void addJsonFileToBody() {
+        request  =  RestAssured.given();
+//        var responseBody = response.getBody().asString();
+        File file = new File("C:\\Users\\Ewelina\\IdeaProjects\\cucumber_booking\\src\\main\\java\\utilities\\bookingJson.json");
+
+        response = RestAssured.
+                given().
+                contentType("application/json").
+//                body(file).
+                body(file).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
+
+//        assertThat(responseBody, matchesJsonSchemaInClasspath("booking.Json.json"));
+        Assert.assertEquals(response.getStatusCode(), 200);
+        System.out.println("Body :" + response.getBody().asString());
+    }
 }
 
 
