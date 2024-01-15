@@ -1,17 +1,17 @@
 package steps;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
-import utilities.BookingBody;
-import utilities.BookingDatesBody;
-import utilities.Faker;
-import utilities.Helper;
+import utilities.*;
 
 public class Steps {
+    public static int bookingId;
     public static BookingBody bookingBody;
     RequestSpecification request;
     public static Response response;
@@ -53,7 +53,6 @@ public class Steps {
                 given().
                 contentType("application/json").
                 body(bookingBody).
-//                body(BookingBody.builder().build()).
                     when().
                         post(BDDStyledMethod.baseUrl()).
                         then().
@@ -88,6 +87,70 @@ public class Steps {
                 then().
                 extract().
                 response();
+    }
+
+    @And("Get {existId} from booking")
+    public void getIdFromExistingBooking(int id) {
+        bookingId = id;
+        if (String.valueOf(id).equals(String.valueOf(null))) {
+            System.out.println(id);
+        } else
+        System.out.println("bookingId: " + bookingId);
+    }
+
+    @And("Put booking with random parameters firstname: {string}, lastname: {string}")
+    public void putEXISTBookingWithRandomParameters(String firstName, String lastname) {
+        bookingBody = BookingBody.builder()
+                .firstname(firstName)
+                .lastname(lastname)
+                .totalprice(String.valueOf(Faker.getRandomPrice()))
+                .depositpaid("true")
+                .bookingdates(BookingDatesBody.builder()
+                        .checkin(Faker.getTodaysDate())
+                        .checkout(Faker.getTomorrowDate())
+                        .build())
+                .additionalneeds("Breakfast")
+                .build();
+
+        System.out.println(Helper.objectToJson(bookingBody));
+    }
+
+    @When("Put {existId} booking")
+    public void putBooking(int id) {
+        bookingId = id;
+
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/" + bookingId;
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                header("Authorization", BDDStyledMethod.authorization()).
+                header("Cookie", BDDStyledMethod.cookies()).
+                body(bookingBody).
+                        when().
+                        put(BDDStyledMethod.baseUrl() + "/" + bookingId).
+                        then().
+                        extract().
+                        response();
+    }
+
+    @And("Delete booking")
+    public void deleteBooking() {
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                header("Authorization", BDDStyledMethod.authorization()).
+                header("Cookie", BDDStyledMethod.cookies()).
+                when().
+                delete(BDDStyledMethod.baseUrl() + "/" + bookingId).
+                then().
+                extract().
+                response();
+    }
+
+    public static int getId() {
+        return (response.jsonPath().getInt("bookingid"));
     }
 }
 

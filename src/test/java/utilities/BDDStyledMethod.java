@@ -1,4 +1,4 @@
-package steps;
+package utilities;
 
 public class BDDStyledMethod {
 

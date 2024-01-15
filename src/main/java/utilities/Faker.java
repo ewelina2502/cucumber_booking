@@ -37,4 +37,8 @@ public class Faker {
     public static int getRandomPrice() {
         return fakePL().random().nextInt(10);
     }
+
+    public static int getRandom() {
+        return fakePL().random().nextInt(10);
+    }
 }
