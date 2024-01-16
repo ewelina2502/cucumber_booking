@@ -13,9 +13,21 @@ public class Faker {
         return ft.format(dNow);
     }
 
+    public static String getRandomDates() {
+        int year = fakePL().random().nextInt(1000);
+        int month = fakePL().random().nextInt(1, 11);
+        int day = fakePL().random().nextInt(1, 27);
+        return year + "-" + month + "-" + day;
+    }
+
     public static String getTomorrowDate() {
         LocalDate today = LocalDate.now();
         return String.valueOf(today.plusDays(1));
+    }
+
+    public static String getYesterdayDate() {
+        LocalDate today = LocalDate.now();
+        return String.valueOf(today.minusDays(1));
     }
 
     public static com.github.javafaker.Faker fakePL() {

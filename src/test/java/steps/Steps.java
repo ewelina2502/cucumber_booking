@@ -60,17 +60,32 @@ public class Steps {
                         response();
     }
 
-    @Given("Add firstname: {string}, lastname: {string}, totalprice: {string}, depositpaid: {string}, checkin: {string}, checkout: {string}, additionalneeds: {string}")
+    @When("Post booking with {randomBody}")
+    public void post_booking_random_body(BookingBody randomBody) {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                body(randomBody).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
+        System.out.println(Helper.objectToJson(randomBody));
+    }
 
-    public void add(String firstname, String lastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
+    @Given("Add firstname: {string}, lastname: {string}, totalprice: {string}, depositpaid: {string}, checkin: {randomDates}, checkout: {randomDates}, additionalneeds: {string}")
+    public void addBokkingOutline(String firstname, String lastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
         bookingBody = BookingBody.builder()
                 .firstname(firstname)
                 .lastname(lastname)
                 .totalprice(totalprice)
                 .depositpaid(depositpaid)
                 .bookingdates(BookingDatesBody.builder()
-                        .checkin(Faker.getTodaysDate())
-                        .checkout(Faker.getTomorrowDate())
+                        .checkin(checkin)
+                        .checkout(checkout)
                         .build())
                 .additionalneeds(additionalneeds)
                 .build();
@@ -92,13 +107,14 @@ public class Steps {
     @And("Get {existId} from booking")
     public void getIdFromExistingBooking(int id) {
         bookingId = id;
-        if (String.valueOf(id).equals(String.valueOf(null))) {
-            System.out.println(id);
-        } else
         System.out.println("bookingId: " + bookingId);
+
+//        if (String.valueOf(id).equals(String.valueOf(null))) {
+//            System.out.println(id);
+//        }
     }
 
-    @And("Put booking with random parameters firstname: {string}, lastname: {string}")
+    @And("Booking with random parameters firstname: {string}, lastname: {string}")
     public void putEXISTBookingWithRandomParameters(String firstName, String lastname) {
         bookingBody = BookingBody.builder()
                 .firstname(firstName)
@@ -134,6 +150,25 @@ public class Steps {
                         response();
     }
 
+    @When("Patch {existId} booking")
+    public void patchBooking(int id) {
+        bookingId = id;
+
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/" + bookingId;
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                header("Authorization", BDDStyledMethod.authorization()).
+                header("Cookie", BDDStyledMethod.cookies()).
+                body(bookingBody).
+                when().
+                patch(BDDStyledMethod.baseUrl() + "/" + bookingId).
+                then().
+                extract().
+                response();
+    }
+
     @And("Delete booking")
     public void deleteBooking() {
         request = RestAssured.given();
@@ -147,6 +182,7 @@ public class Steps {
                 then().
                 extract().
                 response();
+        System.out.println("DELETING IS CORRECT and NOT FOUND bookingId: " + bookingId);
     }
 
     public static int getId() {
