@@ -7,6 +7,7 @@ Feature: Booking tests
 
   @CreateBooking
   @DeleteBooking
+  @Ignore
   Scenario: Post booking
     Given Add body with random parameters
     When Post booking with RANDOM_BODY

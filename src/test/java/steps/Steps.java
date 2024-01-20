@@ -108,10 +108,6 @@ public class Steps {
     public void getIdFromExistingBooking(int id) {
         bookingId = id;
         System.out.println("bookingId: " + bookingId);
-
-//        if (String.valueOf(id).equals(String.valueOf(null))) {
-//            System.out.println(id);
-//        }
     }
 
     @And("Booking with random parameters firstname: {string}, lastname: {string}")
