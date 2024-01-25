@@ -24,7 +24,6 @@ public class BeforeScenario {
                 .additionalneeds(Faker.getRandomAdditinalNeeds())
                 .build();
 
-        System.out.println(Helper.objectToJson(bookingBody));
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
         Steps.response = RestAssured.
                 given().

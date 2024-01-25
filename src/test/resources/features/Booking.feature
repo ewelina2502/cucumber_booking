@@ -7,7 +7,6 @@ Feature: Booking tests
 
   @CreateBooking
   @DeleteBooking
-  @Ignore
   Scenario: Post booking with random body
     Given Add body with random parameters
     When Post booking with RANDOM_BODY
@@ -22,7 +21,6 @@ Feature: Booking tests
       | RANDOM    | RANDOM   | RANDOM     | false       | TODAY   | TOMORROW | RANDOM          |
       | RANDOM    | RANDOM   | RANDOM     | true        | RANDOM  | RANDOM   | RANDOM          |
       | RANDOM    | RANDOM   | RANDOM     | false       | RANDOM  | TODAY    | RANDOM          |
-
 
   @CreateBooking
   Scenario: Delete post booking

@@ -56,24 +56,6 @@ public class Parameters {
         };
     }
 
-    @ParameterType(value = "RANDOM")
-    public String getFirstName(String value) {
-        return switch (value) {
-            case "RANDOM" -> Faker.getFistname();
-            case "NULL" -> "NULL";
-            default -> bookingBody.getFirstname();
-        };
-    }
-
-    @ParameterType(value = "RANDOM")
-    public String getLastName(String value) {
-        return switch (value) {
-            case "RANDOM" -> Faker.getLastname();
-            case "NULL" -> "NULL";
-            default -> bookingBody.getLastname();
-        };
-    }
-
     @ParameterType(value = "RANDOM|NULL")
     public String totalPrice(String value) {
         return switch (value) {

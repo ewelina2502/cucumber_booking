@@ -15,6 +15,8 @@ public class Steps {
     public static BookingBody bookingBody;
     RequestSpecification request;
     public static Response response;
+    public static String firstname;
+    public static String lastname;
 
     @Given("Get booking")
     public void getBooking() {
@@ -35,14 +37,12 @@ public class Steps {
                         .build())
                 .additionalneeds("Breakfast")
                 .build();
-
-        System.out.println(Helper.objectToJson(bookingBody));
     }
 
     @Then("Status code: {int}")
     public void statusCode(int Code) {
         Assert.assertEquals(response.getStatusCode(), Code);
-        System.out.println(response.getBody().asString());
+        System.out.println(response.getBody().asPrettyString());
     }
 
     @Given("Post booking")
@@ -53,11 +53,11 @@ public class Steps {
                 given().
                 contentType("application/json").
                 body(bookingBody).
-                    when().
-                        post(BDDStyledMethod.baseUrl()).
-                        then().
-                        extract().
-                        response();
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
     }
 
     @When("Post booking with {randomBody}")
@@ -73,16 +73,16 @@ public class Steps {
                 then().
                 extract().
                 response();
-        System.out.println(Helper.objectToJson(randomBody));
     }
 
     @Given("Add firstname: {string}, lastname: {string}, totalprice: {totalPrice}, depositpaid: {string}, checkin: {randomDates}, checkout: {randomDates}, additionalneeds: {additionalNeeds}")
-    public void addBokkingOutline(String firstname, String lastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
-
+    public void addBokkingOutline(String newFirstname, String newLastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
+        firstname = newFirstname;
+        lastname = newLastname;
 
         bookingBody = BookingBody.builder()
-                .firstname(firstname)
-                .lastname(lastname)
+                .firstname(getFirstName(firstname))
+                .lastname(getLastName(lastname))
                 .totalprice(totalprice)
                 .depositpaid(depositpaid)
                 .bookingdates(BookingDatesBody.builder()
@@ -141,11 +141,11 @@ public class Steps {
                 header("Authorization", BDDStyledMethod.authorization()).
                 header("Cookie", BDDStyledMethod.cookies()).
                 body(bookingBody).
-                        when().
-                        put(BDDStyledMethod.baseUrl() + "/" + bookingId).
-                        then().
-                        extract().
-                        response();
+                when().
+                put(BDDStyledMethod.baseUrl() + "/" + bookingId).
+                then().
+                extract().
+                response();
     }
 
     @When("Patch {existId} booking")
@@ -186,12 +186,20 @@ public class Steps {
     public static int getId() {
         return (response.jsonPath().getInt("bookingid"));
     }
+
+    public static String getFirstName(String name) {
+        firstname = name;
+        if (name.equals("RANDOM")) {
+            return Faker.getFistname();
+        }
+        return name;
+    }
+
+    public static String getLastName(String name) {
+        lastname = name;
+        if (name.equals("RANDOM")) {
+            return Faker.getLastname();
+        }
+        return name;
+    }
 }
-
-
-
-
-
-
-
-
