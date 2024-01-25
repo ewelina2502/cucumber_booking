@@ -3,8 +3,17 @@ package utilities;
 import io.cucumber.java.ParameterType;
 import steps.Steps;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static steps.Steps.bookingBody;
+
 public class Parameters {
-    public static BookingBody bookingBody;
+
+    @ParameterType("(?:[^,]*)(?:,\\s?[^,]*)*")
+    public List<String> stringListValue(String list) {
+        return Arrays.asList(list.split(",\\s?"));
+    }
 
     @ParameterType(value = "EXIST|RANDOM|NULL")
     public int existId(String value) {
@@ -18,14 +27,14 @@ public class Parameters {
 
     @ParameterType(value = "RANDOM_BODY")
     public BookingBody randomBody(String value) {
-        return switch (value) {
-            case "RANDOM" -> createRandomBody();
-            default -> Steps.bookingBody;
-        };
+        if (value.equals("RANDOM_BODY")) {
+            createRandomBody();
+        }
+        return bookingBody;
     }
 
-    public static BookingBody createRandomBody() {
-        return BookingBody.builder().build();
+    public static void createRandomBody() {
+        BookingBody.builder().build();
     }
 
     @ParameterType(value = "RANDOM|TODAY|TOMORROW")
@@ -35,6 +44,24 @@ public class Parameters {
             case "TODAY" -> Faker.getTodaysDate();
             case "TOMORROW" -> Faker.getYesterdayDate();
             default -> Faker.getTomorrowDate();
+        };
+    }
+
+    @ParameterType(value = "RANDOM|BREAKFAST")
+    public String additionalNeeds(String value) {
+        return switch (value) {
+            case "RANDOM" -> Faker.getRandomAdditinalNeeds();
+            case "BREAKFAST" -> "BREAKFAST";
+            default -> null;
+        };
+    }
+
+    @ParameterType(value = "RANDOM|NULL")
+    public String totalPrice(String value) {
+        return switch (value) {
+            case "RANDOM" -> String.valueOf(Faker.getRandomPrice());
+            case "NULL" -> null;
+            default -> value;
         };
     }
 }

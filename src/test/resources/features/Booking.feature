@@ -7,21 +7,20 @@ Feature: Booking tests
 
   @CreateBooking
   @DeleteBooking
-  @Ignore
-  Scenario: Post booking
+  Scenario: Post booking with random body
     Given Add body with random parameters
     When Post booking with RANDOM_BODY
     Then Status code: 200
 
-  Scenario Outline: Post booking with datas
-    Given Add firstname: "<firstname>", lastname: "<lastname>", totalprice: "<totalprice>", depositpaid: "<depositpaid>", checkin: <checkin>, checkout: <checkout>, additionalneeds: "<additionalneeds>"
+  Scenario Outline: Post three bookings with datas from outline
+    Given Add firstname: "<firstname>", lastname: "<lastname>", totalprice: <totalprice>, depositpaid: "<depositpaid>", checkin: <checkin>, checkout: <checkout>, additionalneeds: <additionalneeds>
     When Post booking
     Then Status code: 200
     Examples:
       | firstname | lastname | totalprice | depositpaid | checkin | checkout | additionalneeds |
-      | Adam      | Nowak    | 123        | true        | RANDOM  | TOMORROW | Breakfast       |
-      | Ada       | Nowa     | 124        | false       | TODAY   | TOMORROW | Lunch           |
-      | Magda     | Kowal    | 125        | false       | RANDOM  | RANDOM   | Lunch           |
+      | RANDOM    | RANDOM   | RANDOM     | false       | TODAY   | TOMORROW | RANDOM          |
+      | RANDOM    | RANDOM   | RANDOM     | true        | RANDOM  | RANDOM   | RANDOM          |
+      | RANDOM    | RANDOM   | RANDOM     | false       | RANDOM  | TODAY    | RANDOM          |
 
   @CreateBooking
   Scenario: Delete post booking
@@ -31,14 +30,14 @@ Feature: Booking tests
 
   @CreateBooking
   @DeleteBooking
-  Scenario: Put booking
+  Scenario: Put existing booking
     And Booking with random parameters firstname: "RandomFristName", lastname: "RandomFristName"
     When Put EXIST booking
     Then Status code: 200
 
   @CreateBooking
   @DeleteBooking
-  Scenario: Patch booking
+  Scenario: Patch existing booking
     And Booking with random parameters firstname: "RandomFristName", lastname: "RandomFristName"
     When Patch EXIST booking
     Then Status code: 200

@@ -4,12 +4,15 @@ import io.cucumber.java.Before;
 import io.restassured.RestAssured;
 import steps.Steps;
 
+import static steps.Steps.bookingBody;
+
 public class BeforeScenario {
     public static int bookingId;
 
     @Before(value = "@CreateBooking")
     public static void createBooking() {
-        Steps.bookingBody = BookingBody.builder()
+        bookingBody = null;
+        bookingBody = BookingBody.builder()
                 .firstname(Faker.getFistname())
                 .lastname(Faker.getLastname())
                 .totalprice(String.valueOf(Faker.getRandomPrice()))
@@ -18,15 +21,14 @@ public class BeforeScenario {
                         .checkin(Faker.getTodaysDate())
                         .checkout(Faker.getTomorrowDate())
                         .build())
-                .additionalneeds("Breakfast")
+                .additionalneeds(Faker.getRandomAdditinalNeeds())
                 .build();
 
-        System.out.println(Helper.objectToJson(Steps.bookingBody));
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
         Steps.response = RestAssured.
                 given().
                 contentType("application/json").
-                body(Steps.bookingBody).
+                body(bookingBody).
                 when().
                 post(BDDStyledMethod.baseUrl()).
                 then().
