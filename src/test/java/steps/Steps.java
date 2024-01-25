@@ -76,8 +76,10 @@ public class Steps {
         System.out.println(Helper.objectToJson(randomBody));
     }
 
-    @Given("Add firstname: {string}, lastname: {string}, totalprice: {string}, depositpaid: {string}, checkin: {randomDates}, checkout: {randomDates}, additionalneeds: {string}")
+    @Given("Add firstname: {string}, lastname: {string}, totalprice: {totalPrice}, depositpaid: {string}, checkin: {randomDates}, checkout: {randomDates}, additionalneeds: {additionalNeeds}")
     public void addBokkingOutline(String firstname, String lastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
+
+
         bookingBody = BookingBody.builder()
                 .firstname(firstname)
                 .lastname(lastname)

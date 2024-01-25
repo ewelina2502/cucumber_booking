@@ -1,5 +1,7 @@
 package utilities;
 
+import com.github.javafaker.Food;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -47,10 +49,14 @@ public class Faker {
     }
 
     public static int getRandomPrice() {
-        return fakePL().random().nextInt(10);
+        return fakePL().random().nextInt(1000);
     }
 
     public static int getRandom() {
         return fakePL().random().nextInt(10);
+    }
+
+    public static String getRandomAdditinalNeeds() {
+        return fakePL().food().fruit();
     }
 }
