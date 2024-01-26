@@ -61,7 +61,7 @@ public class Steps {
     }
 
     @When("Post booking with {randomBody}")
-    public void post_booking_random_body(BookingBody randomBody) {
+    public void postBookingRandomBody(BookingBody randomBody) {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
         request = RestAssured.given();
         response = RestAssured.
@@ -76,7 +76,7 @@ public class Steps {
     }
 
     @Given("Add firstname: {string}, lastname: {string}, totalprice: {totalPrice}, depositpaid: {string}, checkin: {randomDates}, checkout: {randomDates}, additionalneeds: {additionalNeeds}")
-    public void addBokkingOutline(String newFirstname, String newLastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
+    public void addBookingOutline(String newFirstname, String newLastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
         firstname = newFirstname;
         lastname = newLastname;
 
@@ -113,7 +113,7 @@ public class Steps {
     }
 
     @And("Booking with random parameters firstname: {string}, lastname: {string}")
-    public void putEXISTBookingWithRandomParameters(String firstName, String lastname) {
+    public void putExistBookingWithRandomParameters(String firstName, String lastname) {
         bookingBody = BookingBody.builder()
                 .firstname(firstName)
                 .lastname(lastname)
