@@ -37,6 +37,6 @@ Feature: Booking tests
   @CreateBooking
   @DeleteBooking
   Scenario: Patch existing booking
-    And Booking with random parameters firstname: "RandomFristName", lastname: "RandomFristName"
+    And Booking with random parameters firstname: "UpdatedFristName", lastname: "UpdatedLastName"
     When Patch EXIST booking
     Then Status code: 200
