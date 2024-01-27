@@ -5,22 +5,16 @@ import steps.Steps;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static steps.Steps.bookingBody;
+import static steps.Steps.*;
 
 public class Parameters {
-
-    @ParameterType("(?:[^,]*)(?:,\\s?[^,]*)*")
-    public List<String> stringListValue(String list) {
-        return Arrays.asList(list.split(",\\s?"));
-    }
 
     @ParameterType(value = "EXIST|RANDOM|NULL")
     public int existId(String value) {
         return switch (value) {
-            case "EXIST" -> Steps.getId();
+            case "EXIST" -> Steps.getId(bookingId);
             case "NULL" -> NullValueHelper.ifIntegerNull(null);
-            case "RANDOM" -> Faker.getRandom();
+            case "RANDOM" -> Faker.getRandom() + 999999;
             default -> 0;
         };
     }
@@ -63,5 +57,10 @@ public class Parameters {
             case "NULL" -> null;
             default -> value;
         };
+    }
+
+    @ParameterType("(?:[^,]*)(?:,\\s?[^,]*)*")
+    public List<String> stringListValue(String list) {
+        return Arrays.asList(list.split(",\\s?"));
     }
 }
