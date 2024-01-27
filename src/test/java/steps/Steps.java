@@ -7,8 +7,11 @@ import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.junit.After;
 import org.junit.Assert;
 import utilities.*;
+
+import static utilities.AfterScenario.getCorrectId;
 
 public class Steps {
     public static int bookingId;
@@ -18,8 +21,8 @@ public class Steps {
     public static String firstname;
     public static String lastname;
 
-    @Given("Get booking")
-    public void getBooking() {
+    @Given("Get bookings")
+    public void getBookings() {
         response = RestAssured.get(BDDStyledMethod.baseUrl());
         System.out.println(response.getBody().prettyPrint().indexOf(0));
     }
@@ -42,6 +45,7 @@ public class Steps {
     @Then("Status code: {int}")
     public void statusCode(int Code) {
         Assert.assertEquals(response.getStatusCode(), Code);
+        System.out.println("Staus code: " + response.getStatusCode());
         System.out.println(response.getBody().asPrettyString());
     }
 
@@ -106,34 +110,43 @@ public class Steps {
                 response();
     }
 
-    @And("Get {existId} from booking")
-    public void getIdFromExistingBooking(int id) {
+    @Given("{existId} booking after created")
+    public void existBookingAfterCreated(int id) {
         bookingId = id;
-        System.out.println("bookingId: " + bookingId);
+        System.out.println("correctId: " + getCorrectId());
     }
 
-    @And("Booking with random parameters firstname: {string}, lastname: {string}")
-    public void putExistBookingWithRandomParameters(String firstName, String lastname) {
-        bookingBody = BookingBody.builder()
-                .firstname(firstName)
-                .lastname(lastname)
-                .totalprice(String.valueOf(Faker.getRandomPrice()))
-                .depositpaid("true")
-                .bookingdates(BookingDatesBody.builder()
-                        .checkin(Faker.getTodaysDate())
-                        .checkout(Faker.getTomorrowDate())
-                        .build())
-                .additionalneeds("Breakfast")
-                .build();
+    @And("Get {existId} id from booking")
+    public void getIdFromExistingBooking(int id) {
+        bookingId =  id;
+        bookingId = response.jsonPath().getInt("bookingid");
 
-        System.out.println(Helper.objectToJson(bookingBody));
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/" + bookingId;
+        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/" + bookingId);
+
+        assert bookingId == response.jsonPath().getInt("bookingid");
+
+        System.out.println("bookingId: " + bookingId);
+        System.out.println(response.getBody().asPrettyString());
+
+        getId(id);
+        System.out.println(id);
+    }
+
+    @And("Get information for no {existId} booking")
+    public void getNoEXISTBooking(int id) {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/:" +  getId(id);
+        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/:" +  getId(id));
+        System.out.println("get response path: " + BDDStyledMethod.baseUrl() + "/:" +  getId(id));
+        System.out.println(response.getBody().asPrettyString());
     }
 
     @When("Put {existId} booking")
     public void putBooking(int id) {
         bookingId = id;
+        int corrrectId = getCorrectId();
 
-        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/" + bookingId;
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/:" + corrrectId;
         request = RestAssured.given();
         response = RestAssured.
                 given().
@@ -142,17 +155,19 @@ public class Steps {
                 header("Cookie", BDDStyledMethod.cookies()).
                 body(bookingBody).
                 when().
-                put(BDDStyledMethod.baseUrl() + "/" + bookingId).
+                put(BDDStyledMethod.baseUrl() + "/" + corrrectId).
                 then().
                 extract().
                 response();
+        System.out.println(RestAssured.baseURI);
     }
 
     @When("Patch {existId} booking")
     public void patchBooking(int id) {
         bookingId = id;
+        int corrrectId = getCorrectId();
 
-        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/" + bookingId;
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/:" + corrrectId;
         request = RestAssured.given();
         response = RestAssured.
                 given().
@@ -161,14 +176,18 @@ public class Steps {
                 header("Cookie", BDDStyledMethod.cookies()).
                 body(bookingBody).
                 when().
-                patch(BDDStyledMethod.baseUrl() + "/" + bookingId).
+                patch(BDDStyledMethod.baseUrl() + "/" + corrrectId).
                 then().
                 extract().
                 response();
+        System.out.println(RestAssured.baseURI);
     }
 
-    @And("Delete booking")
-    public void deleteBooking() {
+    @And("Delete {existId} booking")
+    public void deleteBooking(int id) {
+        bookingId = id;
+        assert bookingId == response.jsonPath().getInt("bookingid");
+
         request = RestAssured.given();
         response = RestAssured.
                 given().
@@ -183,8 +202,11 @@ public class Steps {
         System.out.println("DELETING IS CORRECT and NOT FOUND bookingId: " + bookingId);
     }
 
-    public static int getId() {
-        return (response.jsonPath().getInt("bookingid"));
+    @And("Booking with random parameters firstname: {string}, lastname: {string}")
+    public void putExistBookingWithRandomParameters(String firstName, String lastname) {
+        bookingBody.setFirstname(firstName);
+        bookingBody.setLastname(lastname);
+        System.out.println(Helper.objectToJson(bookingBody));
     }
 
     public static String getFirstName(String name) {
@@ -201,5 +223,18 @@ public class Steps {
             return Faker.getLastname();
         }
         return name;
+    }
+
+    public static int getId(int id) {
+//        assert bookingId == id;
+//        return bookingId;
+        System.out.println("bookingFromIdBefore: " + BeforeScenario.bookingFromIdBefore);
+
+        if (BeforeScenario.bookingFromIdBefore == 0) {
+            return bookingId;
+        } else
+            assert BeforeScenario.bookingFromIdBefore != bookingId || bookingId == id;
+        System.out.println("bookingId: " + bookingId);
+        return bookingId;
     }
 }

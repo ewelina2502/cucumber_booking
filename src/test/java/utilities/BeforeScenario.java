@@ -2,16 +2,20 @@ package utilities;
 
 import io.cucumber.java.Before;
 import io.restassured.RestAssured;
-import steps.Steps;
 
+import static steps.Steps.*;
 import static steps.Steps.bookingBody;
 
 public class BeforeScenario {
-    public static int bookingId;
+    public static int bookingFromIdBefore;
+
+    @Before(value = "@Cleaning")
+    public static void cleaning() {
+        System.out.println("CLEANING BOOKINGID");
+    }
 
     @Before(value = "@CreateBooking")
     public static void createBooking() {
-        bookingBody = null;
         bookingBody = BookingBody.builder()
                 .firstname(Faker.getFistname())
                 .lastname(Faker.getLastname())
@@ -25,7 +29,7 @@ public class BeforeScenario {
                 .build();
 
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
-        Steps.response = RestAssured.
+        response = RestAssured.
                 given().
                 contentType("application/json").
                 body(bookingBody).
@@ -35,7 +39,6 @@ public class BeforeScenario {
                 extract().
                 response();
 
-        bookingId = Steps.response.jsonPath().getInt("bookingid");
-        System.out.println("bookingId: " + bookingId);
+        bookingFromIdBefore = response.jsonPath().getInt("bookingid");
     }
 }
