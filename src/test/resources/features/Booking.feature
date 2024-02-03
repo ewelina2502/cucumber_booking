@@ -24,6 +24,20 @@ Feature: Booking tests
     And Get EXIST id from booking
     Then Status code: 200
 
+  @DeleteBooking
+  Scenario Outline: Post booking with different body
+    Given Add body with random parameters
+    When Post booking with <body> to booking
+    Then Status code: 200
+
+    And Get EXIST id from booking
+    Then Status code: 200
+
+    Examples:
+      | body         |
+      | RANDOM_BODY  |
+      | DEFAULT_BODY |
+
   @CreateBooking
   @DeleteBooking
   Scenario: Post booking from before scenario
