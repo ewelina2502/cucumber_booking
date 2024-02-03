@@ -20,7 +20,7 @@ public class BookingBody {
         private String depositpaid = "true";
         private BookingDatesBody bookingdates;
         @Builder.Default
-        private String additionalneeds = "Dinner";
+        private String additionalneeds = Faker.getRandomAdditinalNeeds();
 
 //        @Override
 //        public String toString() {

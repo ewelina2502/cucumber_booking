@@ -7,15 +7,16 @@ import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.junit.After;
 import org.junit.Assert;
 import utilities.*;
 
 import static utilities.AfterScenario.getCorrectId;
+import static utilities.Faker.*;
 
 public class Steps {
     public static int bookingId;
     public static BookingBody bookingBody;
+    public static BookingDefaultBody bookingDefaultBody;
     RequestSpecification request;
     public static Response response;
     public static String firstname;
@@ -28,17 +29,32 @@ public class Steps {
     }
 
     @Given("Add body with random parameters")
-    public void addParameters() {
+    public void addRandomParameters() {
         bookingBody = BookingBody.builder()
-                .firstname(Faker.getFistname())
-                .lastname(Faker.getLastname())
-                .totalprice(String.valueOf(Faker.getRandomPrice()))
+                .firstname(getFistname())
+                .lastname(getLastname())
+                .totalprice(String.valueOf(getRandomPrice()))
                 .depositpaid("true")
                 .bookingdates(BookingDatesBody.builder()
-                        .checkin(Faker.getTodaysDate())
-                        .checkout(Faker.getTomorrowDate())
+                        .checkin(getTodaysDate())
+                        .checkout(getTomorrowDate())
                         .build())
-                .additionalneeds("Breakfast")
+                .additionalneeds(getRandomAdditinalNeeds())
+                .build();
+    }
+
+    @Given("Add body with default parameters")
+    public void addDefaultParameters() {
+        bookingDefaultBody = BookingDefaultBody.builder()
+                .firstname(getFistname())
+                .lastname(getLastname())
+                .totalprice(String.valueOf(getRandomPrice()))
+                .depositpaid("true")
+                .bookingdates(BookingDatesBody.builder()
+                        .checkin(getTodaysDate())
+                        .checkout(getTomorrowDate())
+                        .build())
+                .additionalneeds(getRandomAdditinalNeeds())
                 .build();
     }
 
@@ -64,23 +80,10 @@ public class Steps {
                 response();
     }
 
-    @When("Post booking with {randomBody}")
-    public void postBookingRandomBody(BookingBody randomBody) {
-        RestAssured.baseURI = BDDStyledMethod.baseUrl();
-        request = RestAssured.given();
-        response = RestAssured.
-                given().
-                contentType("application/json").
-                body(randomBody).
-                when().
-                post(BDDStyledMethod.baseUrl()).
-                then().
-                extract().
-                response();
-    }
-
-    @Given("Add firstname: {string}, lastname: {string}, totalprice: {totalPrice}, depositpaid: {string}, checkin: {randomDates}, checkout: {randomDates}, additionalneeds: {additionalNeeds}")
-    public void addBookingOutline(String newFirstname, String newLastname, String totalprice, String depositpaid, String checkin, String checkout, String additionalneeds) {
+    @Given("Add firstname: {string}, lastname: {string}, totalprice: {totalPrice}, depositpaid: {string}, " +
+            "checkin: {randomDates}, checkout: {randomDates}, additionalneeds: {additionalNeeds}")
+    public void addBookingOutline(String newFirstname, String newLastname, String totalprice, String depositpaid,
+                                  String checkin, String checkout, String additionalneeds) {
         firstname = newFirstname;
         lastname = newLastname;
 
@@ -118,7 +121,7 @@ public class Steps {
 
     @And("Get {existId} id from booking")
     public void getIdFromExistingBooking(int id) {
-        bookingId =  id;
+        bookingId = id;
         bookingId = response.jsonPath().getInt("bookingid");
 
         RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/" + bookingId;
@@ -135,9 +138,9 @@ public class Steps {
 
     @And("Get information for no {existId} booking")
     public void getNoEXISTBooking(int id) {
-        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/:" +  getId(id);
-        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/:" +  getId(id));
-        System.out.println("get response path: " + BDDStyledMethod.baseUrl() + "/:" +  getId(id));
+        RestAssured.baseURI = BDDStyledMethod.baseUrl() + "/:" + getId(id);
+        response = RestAssured.get(BDDStyledMethod.baseUrl() + "/:" + getId(id));
+        System.out.println("get response path: " + BDDStyledMethod.baseUrl() + "/:" + getId(id));
         System.out.println(response.getBody().asPrettyString());
     }
 
@@ -212,7 +215,7 @@ public class Steps {
     public static String getFirstName(String name) {
         firstname = name;
         if (name.equals("RANDOM")) {
-            return Faker.getFistname();
+            return getFistname();
         }
         return name;
     }
@@ -220,14 +223,12 @@ public class Steps {
     public static String getLastName(String name) {
         lastname = name;
         if (name.equals("RANDOM")) {
-            return Faker.getLastname();
+            return getLastname();
         }
         return name;
     }
 
     public static int getId(int id) {
-//        assert bookingId == id;
-//        return bookingId;
         System.out.println("bookingFromIdBefore: " + BeforeScenario.bookingFromIdBefore);
 
         if (BeforeScenario.bookingFromIdBefore == 0) {
@@ -236,5 +237,35 @@ public class Steps {
             assert BeforeScenario.bookingFromIdBefore != bookingId || bookingId == id;
         System.out.println("bookingId: " + bookingId);
         return bookingId;
+    }
+
+    @When("Post booking with {randomBody}")
+    public void postBookingWithRANDOM_BODY(BookingBody randomBody) {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                body(randomBody).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
+    }
+
+    @When("Post booking with {defaultBody}")
+    public void postBookingWithRANDOM_BODY(BookingDefaultBody defaultBody) {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                body(defaultBody).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
     }
 }

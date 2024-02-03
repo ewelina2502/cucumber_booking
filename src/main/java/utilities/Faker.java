@@ -1,14 +1,11 @@
 package utilities;
 
-import com.github.javafaker.Food;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 
 public class Faker {
-
     public static String getTodaysDate() {
         Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");

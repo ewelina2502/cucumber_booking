@@ -5,9 +5,34 @@ import steps.Steps;
 
 import java.util.Arrays;
 import java.util.List;
+
 import static steps.Steps.*;
 
 public class Parameters {
+
+    @ParameterType(value = "RANDOM_BODY")
+    public BookingBody randomBody(String value) {
+        if (value.equals("RANDOM_BODY")) {
+            createRandomBody();
+        }
+        return bookingBody;
+    }
+
+    @ParameterType(value = "DEFAULT_BODY")
+    public BookingDefaultBody defaultBody(String value) {
+        if (value.equals("DEFAULT_BODY")) {
+            createDefaultBody();
+        }
+        return bookingDefaultBody;
+    }
+
+    public static void createRandomBody() {
+        BookingBody.builder().build();
+    }
+
+    public static void createDefaultBody() {
+        BookingDefaultBody.builder().build();
+    }
 
     @ParameterType(value = "EXIST|RANDOM|NULL")
     public int existId(String value) {
@@ -20,15 +45,11 @@ public class Parameters {
     }
 
     @ParameterType(value = "RANDOM_BODY")
-    public BookingBody randomBody(String value) {
+    public BookingBody bodys(String value) {
         if (value.equals("RANDOM_BODY")) {
-            createRandomBody();
+            BookingBody.builder().build();
         }
         return bookingBody;
-    }
-
-    public static void createRandomBody() {
-        BookingBody.builder().build();
     }
 
     @ParameterType(value = "RANDOM|TODAY|TOMORROW")
