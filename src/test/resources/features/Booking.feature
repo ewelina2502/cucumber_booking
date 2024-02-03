@@ -9,7 +9,7 @@ Feature: Booking tests
   @DeleteBooking
   Scenario: Post booking with random body
     Given Add body with random parameters
-    When Post booking with RANDOM_BODY
+    When Post booking with RANDOM_BODY to booking
     Then Status code: 200
 
     And Get EXIST id from booking
@@ -18,7 +18,7 @@ Feature: Booking tests
   @DeleteBooking
   Scenario: Post booking with default body
     Given Add body with default parameters
-    When Post booking with DEFAULT_BODY
+    When Post booking with DEFAULT_BODY to booking
     Then Status code: 200
 
     And Get EXIST id from booking
@@ -53,7 +53,8 @@ Feature: Booking tests
 
   Scenario: Delete post booking and then post booking
     Given Add body with random parameters
-    When Post booking with RANDOM_BODY
+    When Post booking with RANDOM_BODY to booking
+
     Then Status code: 200
 
     And Get EXIST id from booking

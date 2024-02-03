@@ -10,28 +10,23 @@ import static steps.Steps.*;
 
 public class Parameters {
 
-    @ParameterType(value = "RANDOM_BODY")
-    public BookingBody randomBody(String value) {
-        if (value.equals("RANDOM_BODY")) {
-            createRandomBody();
-        }
+    @ParameterType(value = "RANDOM_BODY|DEFAULT_BODY")
+    public Object switchBodys(String value) {
+        return switch (value) {
+            case "RANDOM_BODY" -> createRandomBody();
+            case "DEFAULT_BODY" -> createDefaultBody();
+            default -> BookingBody.builder().build();
+        };
+    }
+
+    public static BookingBody createRandomBody() {
+        BookingBody.builder().build();
         return bookingBody;
     }
 
-    @ParameterType(value = "DEFAULT_BODY")
-    public BookingDefaultBody defaultBody(String value) {
-        if (value.equals("DEFAULT_BODY")) {
-            createDefaultBody();
-        }
-        return bookingDefaultBody;
-    }
-
-    public static void createRandomBody() {
-        BookingBody.builder().build();
-    }
-
-    public static void createDefaultBody() {
+    public static BookingDefaultBody createDefaultBody() {
         BookingDefaultBody.builder().build();
+        return bookingDefaultBody;
     }
 
     @ParameterType(value = "EXIST|RANDOM|NULL")
