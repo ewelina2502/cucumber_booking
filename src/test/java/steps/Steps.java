@@ -239,29 +239,14 @@ public class Steps {
         return bookingId;
     }
 
-    @When("Post booking with {randomBody}")
-    public void postBookingWithRANDOM_BODY(BookingBody randomBody) {
+    @When("Post booking with {switchBodys} to booking")
+    public void postBookingWithRANDOM_BODY(Object bodyParams) {
         RestAssured.baseURI = BDDStyledMethod.baseUrl();
         request = RestAssured.given();
         response = RestAssured.
                 given().
                 contentType("application/json").
-                body(randomBody).
-                when().
-                post(BDDStyledMethod.baseUrl()).
-                then().
-                extract().
-                response();
-    }
-
-    @When("Post booking with {defaultBody}")
-    public void postBookingWithRANDOM_BODY(BookingDefaultBody defaultBody) {
-        RestAssured.baseURI = BDDStyledMethod.baseUrl();
-        request = RestAssured.given();
-        response = RestAssured.
-                given().
-                contentType("application/json").
-                body(defaultBody).
+                body(bodyParams).
                 when().
                 post(BDDStyledMethod.baseUrl()).
                 then().
