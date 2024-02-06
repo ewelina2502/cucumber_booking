@@ -8,8 +8,8 @@ Feature: Booking tests
 
   @DeleteBooking
   Scenario: Post booking with random body
-    Given Add body with random parameters
-    When Post booking with RANDOM_BODY to booking
+    Given Add body with RANDOM_BODY to booking
+    When I post booking
     Then Status code: 200
 
     And Get EXIST id from booking
@@ -17,12 +17,26 @@ Feature: Booking tests
 
   @DeleteBooking
   Scenario: Post booking with default body
-    Given Add body with default parameters
-    When Post booking with DEFAULT_BODY to booking
+    Given Add body with DEFAULT_BODY to booking
+    When I post booking
     Then Status code: 200
 
     And Get EXIST id from booking
     Then Status code: 200
+
+  @DeleteBooking
+  Scenario Outline: Post booking with different body
+    Given Add body with <body> to booking
+    When I post booking
+    Then Status code: 200
+
+    And Get EXIST id from booking
+    Then Status code: 200
+
+    Examples:
+      | body         |
+      | RANDOM_BODY  |
+      | DEFAULT_BODY |
 
   @CreateBooking
   @DeleteBooking
@@ -32,7 +46,7 @@ Feature: Booking tests
 
   Scenario Outline: Post three bookings with datas from outline
     Given Add firstname: "<firstname>", lastname: "<lastname>", totalprice: <totalprice>, depositpaid: "<depositpaid>", checkin: <checkin>, checkout: <checkout>, additionalneeds: <additionalneeds>
-    When Post booking
+    When Post booking with booking body: EXIST_BODY
     Then Status code: 200
 
     And Get EXIST id from booking
@@ -52,8 +66,8 @@ Feature: Booking tests
     Then Status code: 201
 
   Scenario: Delete post booking and then post booking
-    Given Add body with random parameters
-    When Post booking with RANDOM_BODY to booking
+    Given Add body with RANDOM_BODY to booking
+    When I post booking
 
     Then Status code: 200
 

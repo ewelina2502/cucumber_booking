@@ -21,6 +21,7 @@ public class Steps {
     public static Response response;
     public static String firstname;
     public static String lastname;
+    public static Object bodyParams;
 
     @Given("Get bookings")
     public void getBookings() {
@@ -28,9 +29,10 @@ public class Steps {
         System.out.println(response.getBody().prettyPrint().indexOf(0));
     }
 
-    @Given("Add body with random parameters")
-    public void addRandomParameters() {
-        bookingBody = BookingBody.builder()
+    @Given("Add body with {switchBodys} to booking")
+    public void addRandomParameters(Object bodyForBooking) {
+        bodyParams = bodyForBooking;
+        bodyParams = BookingBody.builder()
                 .firstname(getFistname())
                 .lastname(getLastname())
                 .totalprice(String.valueOf(getRandomPrice()))
@@ -43,19 +45,36 @@ public class Steps {
                 .build();
     }
 
-    @Given("Add body with default parameters")
-    public void addDefaultParameters() {
-        bookingDefaultBody = BookingDefaultBody.builder()
-                .firstname(getFistname())
-                .lastname(getLastname())
-                .totalprice(String.valueOf(getRandomPrice()))
-                .depositpaid("true")
-                .bookingdates(BookingDatesBody.builder()
-                        .checkin(getTodaysDate())
-                        .checkout(getTomorrowDate())
-                        .build())
-                .additionalneeds(getRandomAdditinalNeeds())
-                .build();
+    @When("I post booking")
+    public void IpostBooking() {
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                body(bodyParams).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
+    }
+
+    @When("Post booking with booking body: {switchBodys}")
+    public void postBookingWithBody(Object bookingParams) {
+        bodyParams = bookingParams;
+
+        RestAssured.baseURI = BDDStyledMethod.baseUrl();
+        request = RestAssured.given();
+        response = RestAssured.
+                given().
+                contentType("application/json").
+                body(bodyParams).
+                when().
+                post(BDDStyledMethod.baseUrl()).
+                then().
+                extract().
+                response();
     }
 
     @Then("Status code: {int}")
@@ -63,21 +82,6 @@ public class Steps {
         Assert.assertEquals(response.getStatusCode(), Code);
         System.out.println("Staus code: " + response.getStatusCode());
         System.out.println(response.getBody().asPrettyString());
-    }
-
-    @Given("Post booking")
-    public void postBooking() {
-        RestAssured.baseURI = BDDStyledMethod.baseUrl();
-        request = RestAssured.given();
-        response = RestAssured.
-                given().
-                contentType("application/json").
-                body(bookingBody).
-                when().
-                post(BDDStyledMethod.baseUrl()).
-                then().
-                extract().
-                response();
     }
 
     @Given("Add firstname: {string}, lastname: {string}, totalprice: {totalPrice}, depositpaid: {string}, " +
@@ -237,20 +241,5 @@ public class Steps {
             assert BeforeScenario.bookingFromIdBefore != bookingId || bookingId == id;
         System.out.println("bookingId: " + bookingId);
         return bookingId;
-    }
-
-    @When("Post booking with {switchBodys} to booking")
-    public void postBookingWithRANDOM_BODY(Object bodyParams) {
-        RestAssured.baseURI = BDDStyledMethod.baseUrl();
-        request = RestAssured.given();
-        response = RestAssured.
-                given().
-                contentType("application/json").
-                body(bodyParams).
-                when().
-                post(BDDStyledMethod.baseUrl()).
-                then().
-                extract().
-                response();
     }
 }
