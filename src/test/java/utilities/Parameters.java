@@ -10,11 +10,12 @@ import static steps.Steps.*;
 
 public class Parameters {
 
-    @ParameterType(value = "RANDOM_BODY|DEFAULT_BODY")
+    @ParameterType(value = "RANDOM_BODY|DEFAULT_BODY|EXIST_BODY")
     public Object switchBodys(String value) {
         return switch (value) {
             case "RANDOM_BODY" -> createRandomBody();
             case "DEFAULT_BODY" -> createDefaultBody();
+            case "EXIST_BODY" -> bookingBody;
             default -> BookingBody.builder().build();
         };
     }
