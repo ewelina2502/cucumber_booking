@@ -22,7 +22,7 @@ public class BookingBody {
         @Builder.Default
         private String additionalneeds = Faker.getRandomAdditinalNeeds();
 
-//        @@@###$%%$%#@$%@%@@
+//       @@@@@@@
 //        @Override
 //        public String toString() {
 //                return Helper.serializeToJson(this);
