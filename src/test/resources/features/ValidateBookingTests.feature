@@ -1,8 +1,8 @@
 Feature: Validate Booking tests
 
   Scenario: Delete post booking and then post booking
-    Given Add body with random parameters
-    When Post booking with RANDOM_BODY
+    Given Add body with RANDOM_BODY to booking
+    When I post booking
     Then Status code: 200
 
     And Get EXIST id from booking
