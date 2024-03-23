@@ -10,18 +10,23 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
 import utilities.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static utilities.AfterScenario.getCorrectId;
 import static utilities.Faker.*;
+import static utilities.StepCounterManage.*;
 
 public class Steps {
+    RequestSpecification request;
     public static int bookingId;
     public static BookingBody bookingBody;
     public static BookingDefaultBody bookingDefaultBody;
-    RequestSpecification request;
     public static Response response;
     public static String firstname;
     public static String lastname;
     public static Object bodyParams;
+    public static List<String> bookingIds = new ArrayList<>();
 
     @Given("Get bookings")
     public void getBookings() {
@@ -241,5 +246,20 @@ public class Steps {
             assert BeforeScenario.bookingFromIdBefore != bookingId || bookingId == id;
         System.out.println("bookingId: " + bookingId);
         return bookingId;
+    }
+
+    @Given("Get {counterValue} booking")
+    public void getFIRSTBooking(String booking) {
+        getBookingIdFromList(booking);
+        String bookingIdFromList = getBookingIdFromList(booking);
+        System.out.println("bookingIdFromList: "  + bookingIdFromList);
+    }
+
+    private static String getBookingIdFromList(String booking) {
+        response = RestAssured.get(BDDStyledMethod.baseUrl());
+        bookingIds = response.jsonPath().getList("bookingid");
+
+        int bookingIdFromList = (int) response.jsonPath().getList("bookingid").get(stepCount(booking));
+        return String.valueOf(bookingIdFromList);
     }
 }

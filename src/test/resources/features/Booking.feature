@@ -6,6 +6,16 @@ Feature: Booking tests
     Given Get bookings
     Then Status code: 200
 
+  @Cleaning
+  @CreateBooking
+  Scenario: Get first bookings from list
+    Given Add body with RANDOM_BODY to booking
+    When I post booking
+    Then Status code: 200
+
+    Given Get FIRST booking
+    Then Status code: 200
+
   @DeleteBooking
   Scenario: Post booking with random body
     Given Add body with RANDOM_BODY to booking
